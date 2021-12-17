@@ -1,29 +1,26 @@
-import { Component } from 'react';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import PropTypes from 'prop-types';
 import s from './ImageGallery.module.scss';
 
-export class ImageGallery extends Component {
-  pictureClickHandler = (largeImageURL, tags) => {
-    this.props.toggleModal();
-    this.props.getModalPicture(largeImageURL, tags);
+export function ImageGallery({ toggleModal, getModalPicture, pictures }) {
+  const pictureClickHandler = (largeImageURL, tags) => {
+    toggleModal();
+    getModalPicture(largeImageURL, tags);
   };
 
-  render() {
-    return (
-      <ul className={s.ImageGallery}>
-        {this.props.pictures.map(picture => {
-          return (
-            <ImageGalleryItem
-              key={picture.id}
-              picture={picture}
-              clickHandler={this.pictureClickHandler}
-            />
-          );
-        })}
-      </ul>
-    );
-  }
+  return (
+    <ul className={s.ImageGallery}>
+      {pictures.map(picture => {
+        return (
+          <ImageGalleryItem
+            key={picture.id}
+            picture={picture}
+            clickHandler={pictureClickHandler}
+          />
+        );
+      })}
+    </ul>
+  );
 }
 
 ImageGallery.propTypes = {

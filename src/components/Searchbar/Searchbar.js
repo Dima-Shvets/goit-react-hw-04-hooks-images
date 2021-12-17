@@ -1,52 +1,44 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import s from './Searchbar.module.scss';
 
-export class Searchbar extends Component {
-  state = {
-    searchQuery: '',
+export function Searchbar({ formSubmitHandler }) {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const inputHandler = e => {
+    setSearchQuery(e.target.value);
   };
 
-  inputHandler = e => {
-    const searchQuery = e.target.value;
-
-    this.setState({
-      searchQuery,
-    });
-  };
-
-  submitHandler = e => {
+  const submitHandler = e => {
     e.preventDefault();
 
-    if (this.state.searchQuery.trim() === '') {
+    if (searchQuery.trim() === '') {
       return;
     }
 
-    this.props.formSubmitHandler(this.state.searchQuery);
-    this.setState({ searchQuery: '' });
+    formSubmitHandler(searchQuery);
+    setSearchQuery('');
   };
 
-  render() {
-    return (
-      <header className={s.Searchbar}>
-        <form className={s.SearchForm} onSubmit={this.submitHandler}>
-          <button type="submit" className={s['SearchForm-button']}>
-            <span className={s['SearchForm-button-label']}>Search</span>
-          </button>
+  return (
+    <header className={s.Searchbar}>
+      <form className={s.SearchForm} onSubmit={submitHandler}>
+        <button type="submit" className={s['SearchForm-button']}>
+          <span className={s['SearchForm-button-label']}>Search</span>
+        </button>
 
-          <input
-            className={s['SearchForm-input']}
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={this.state.searchQuery}
-            onChange={this.inputHandler}
-          />
-        </form>
-      </header>
-    );
-  }
+        <input
+          className={s['SearchForm-input']}
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={searchQuery}
+          onChange={inputHandler}
+        />
+      </form>
+    </header>
+  );
 }
 
 Searchbar.propTypes = {
